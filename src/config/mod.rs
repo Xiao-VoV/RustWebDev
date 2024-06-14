@@ -1,54 +1,31 @@
-use serde_derive::Deserialize;
+mod logger_config;
+mod system_config;
+
+use once_cell::sync::Lazy;
+use serde::de::DeserializeOwned;
 use std::fs;
-use std::net::{IpAddr, Ipv4Addr};
-use toml;
-/**
- * 读取配置文件
- * @author X.P
- */
-//总配置文件
-#[derive(Deserialize, PartialEq, Debug)]
-pub struct Config {
-    system: System,
-}
+use std::sync::Mutex;
 
-//系统配置
-#[derive(Deserialize, PartialEq, Debug)]
-pub struct System {
-    host: String,
-    port: u16,
-    env: String,
-}
-impl Config {
-    pub fn new(filename: &str) -> System {
-        let contents = match fs::read_to_string(filename) {
-            Ok(c) => c,
-            Err(e) => {
-                panic!("无法加载 config.toml配置文件 {filename} {e}");
-            }
-        };
+static GLOBAL_CONF_FILE: Lazy<Mutex<String>> = Lazy::new(|| {
+    Mutex::new(String::from(
+        "/Users/xp/Desktop/RustProjects/blog_new/src/config.toml",
+    ))
+});
 
-        let config: Config = match toml::from_str(&contents) {
-            Ok(d) => d,
+static GLOBAL_CONF: Lazy<Mutex<String>> = Lazy::new(|| {
+    if let Ok(v) = GLOBAL_CONF_FILE.lock() {
+        match fs::read_to_string(v.clone().as_str()) {
+            Ok(c) => return Mutex::new(c),
             Err(e) => {
-                panic!("配置文件中没有 System 配置 {filename} {e} ");
+                panic!("无法加载 config.toml配置文件 {e}");
             }
-        };
-        config.system
+        }
     }
-}
+    panic!("无法加载配置文件")
+});
 
-#[cfg(test)]
-mod test {
-    use super::*;
-    #[test]
-    pub fn test_config_parse() {
-        let data = Config::new("/Users/xp/Desktop/RustProjects/blog_new/src/config.toml");
-        let data_01 = System {
-            host: "127.0.0.1".to_string(),
-            port: 8000,
-            env: "debug".to_string(),
-        };
-        assert_eq!(data, data_01);
+pub fn section<T: DeserializeOwned>(config: &mut T) {
+    if let Ok(v) = GLOBAL_CONF.lock() {
+        *config = toml::from_str(v.as_str()).unwrap();
     }
 }

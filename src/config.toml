@@ -3,3 +3,7 @@
 host = "127.0.0.1"
 port = 8000
 env = "debug"      #release
+
+[logger]
+level = "info"
+debug = true
