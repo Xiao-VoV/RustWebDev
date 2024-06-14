@@ -64,7 +64,7 @@ fn setup_logger() -> Result<(), fern::InitError> {
 #[cfg(test)]
 mod test {
     use super::*;
-    use log::{debug, error, info, trace, warn};
+    use log::{debug, info, trace, warn};
 
     #[test]
     pub fn log_config_parse() {
