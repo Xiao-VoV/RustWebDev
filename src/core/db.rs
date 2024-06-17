@@ -8,6 +8,8 @@ use crate::config::logger_config::get_log_level;
 use crate::config::{get_by_section_name, SectionName};
 
 // 数据库连接
+// 按照 seaorm官方文档进行配置
+// 未增加配置
 pub async fn connect() -> Result<DatabaseConnection, DbErr> {
     let mysql_config = if let SectionName::MysqlCfg(config) = get_by_section_name("mysql") {
         config
@@ -40,7 +42,7 @@ mod test {
     pub async fn db_connect_test() {
         let db = connect().await.unwrap();
         assert!(db.ping().await.is_ok());
-        db.clone().close().await;
+        // db.clone().close().await;
         // assert!(matches!(db.ping().await, Err(DbErr::ConnectionAcquire)));
     }
 }
