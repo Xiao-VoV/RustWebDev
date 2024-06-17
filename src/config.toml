@@ -7,3 +7,15 @@ env = "debug"      #release
 [logger]
 level = "info"
 debug = true
+
+#mysql 配置
+[mysql]
+url = "mysql://root:12345@127.0.0.1/blog"
+max_connections = 50
+min_connections = 2
+connect_timeout = 8
+acquire_timeout = 8
+idle_timeout = 8
+max_lifetime = 8
+logging = true
+logging_level = "info"

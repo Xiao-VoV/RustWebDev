@@ -7,7 +7,7 @@ pub struct Config {
     logger: Logger,
 }
 
-//系统配置
+//日志配置
 #[derive(Deserialize, PartialEq, Debug)]
 pub struct Logger {
     level: String,
@@ -24,8 +24,8 @@ impl Logger {
 }
 
 // 获取日志等级
-pub fn get_log_level(name: String) -> log::LevelFilter {
-    match name.as_str() {
+pub fn get_log_level(name: &str) -> log::LevelFilter {
+    match name {
         "debug" => log::LevelFilter::Debug,
         "error" => log::LevelFilter::Error,
         "info" => log::LevelFilter::Info,
@@ -49,7 +49,7 @@ fn setup_logger() -> Result<(), fern::InitError> {
         logger: Logger::new(),
     };
     super::section(&mut config);
-    let logging_level = get_log_level(config.logger.level);
+    let logging_level = get_log_level(config.logger.level.as_str());
     f = f.level(logging_level);
 
     if config.logger.debug {

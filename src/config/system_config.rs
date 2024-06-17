@@ -37,15 +37,22 @@ use serde_derive::Deserialize;
 //总配置文件
 #[derive(Deserialize, PartialEq, Debug)]
 pub struct Config {
-    system: System,
+    pub system: System,
+}
+impl Config {
+    pub fn new() -> Self {
+        Self {
+            system: System::new(),
+        }
+    }
 }
 
 //系统配置
 #[derive(Deserialize, PartialEq, Debug)]
 pub struct System {
-    host: String,
-    port: u16,
-    env: String,
+    pub host: String,
+    pub port: u16,
+    pub env: String,
 }
 impl System {
     pub fn new() -> Self {
@@ -56,6 +63,7 @@ impl System {
         }
     }
 }
+// impl super::Section for System {}
 
 #[cfg(test)]
 mod test {
@@ -75,4 +83,18 @@ mod test {
         };
         assert_eq!(config.system, data_01);
     }
+
+    // #[test]
+    // pub fn test_config_parse_01() {
+    //     let mut config: super::super::Config<System> = Config {
+    //         config: System::new(),
+    //     };
+    //     section(&mut config);
+    //     let data_01 = System {
+    //         host: "127.0.0.1".to_string(),
+    //         port: 8000,
+    //         env: "debug".to_string(),
+    //     };
+    //     assert_eq!(config.system, data_01);
+    // }
 }
