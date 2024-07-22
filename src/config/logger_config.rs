@@ -56,7 +56,7 @@ fn setup_logger() -> Result<(), fern::InitError> {
         f = f.chain(std::io::stdout());
     }
 
-    f.chain(fern::log_file("nako.log")?).apply()?;
+    f.chain(fern::log_file("guda.log")?).apply()?;
 
     Ok(())
 }

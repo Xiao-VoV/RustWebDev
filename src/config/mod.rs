@@ -50,7 +50,7 @@ pub enum SectionName {
     Logger(logger_config::Logger),
     MysqlCfg(mysql_config::Mysql),
 }
-
+//通过 section 名称获取反序列化的 struct 对象
 pub fn get_by_section_name(section_name: &str) -> SectionName {
     match section_name {
         "system" => {

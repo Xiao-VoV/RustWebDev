@@ -1,3 +1,0 @@
-[2024-06-14T10:49:14Z INFO blog_new::config::logger_config::test] Hello, world!
-[2024-06-14T10:49:14Z WARN blog_new::config::logger_config::test] Warning!
-[2024-06-14T10:50:36Z INFO blog_new::config::logger_config::test] Hello, world!
